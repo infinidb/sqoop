@@ -18,6 +18,8 @@
 
 package org.apache.sqoop.manager;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.mapreduce.InputFormat;
 import com.cloudera.sqoop.mapreduce.db.DataDrivenDBInputFormat;
 import com.cloudera.sqoop.SqoopOptions;
@@ -28,6 +30,7 @@ import org.apache.hadoop.fs.Path;
  * ConnManager.importTable() as its argument.
  */
 public class ImportJobContext {
+  public static final Log LOG = LogFactory.getLog(InfiniDBManager.class.getName());
 
   private String tableName;
   private String jarFile;

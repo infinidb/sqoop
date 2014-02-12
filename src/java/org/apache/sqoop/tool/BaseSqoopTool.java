@@ -208,6 +208,8 @@ public abstract class BaseSqoopTool extends com.cloudera.sqoop.tool.SqoopTool {
         // set InfiniDB delimiter set
         LOG.info("Using InfiniDB-specific delimiters for output if not explicitly specified");
         sqoopOpts.setOutputDelimiters(DelimiterSet.INFINIDB_DELIMITERS);
+        // InfiniDB import doesn't need or want a boundary query.
+        sqoopOpts.setBoundaryQuery("");
       }
         
       sqoopOpts.setConnectString(connectString);

@@ -48,31 +48,31 @@ public class DBRecordReader<T extends DBWritable> extends
 
   private static final Log LOG = LogFactory.getLog(DBRecordReader.class);
 
-  private ResultSet results = null;
+  protected ResultSet results = null;
 
   private Class<T> inputClass;
 
   private Configuration conf;
 
-  private DBInputFormat.DBInputSplit split;
+  protected DBInputFormat.DBInputSplit split;
 
-  private long pos = 0;
+  protected long pos = 0;
 
-  private LongWritable key = null;
+  protected LongWritable key = null;
 
-  private T value = null;
+  protected T value = null;
 
-  private Connection connection;
+  protected Connection connection;
 
   protected PreparedStatement statement;
 
-  private DBConfiguration dbConf;
+  protected DBConfiguration dbConf;
 
-  private String conditions;
+  protected String conditions;
 
-  private String [] fieldNames;
+  protected String [] fieldNames;
 
-  private String tableName;
+  protected String tableName;
 
   /**
    * @param split The InputSplit to read data for

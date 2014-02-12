@@ -75,14 +75,32 @@ public class DefaultManagerFactory
 
     if (scheme.equals("jdbc:mysql:")) {
 
-      if (options.isDirect()) {
-    	if (options.isInfiniDB()) {
-    	  return new DirectInfiniDBManager(options);
-    	} else {
-    	  return new DirectMySQLManager(options);
+      if (options.isInfiniDB()) {
+    	if (options.getActiveSqoopTool().getToolName().equals("import")) {
+      	  if (options.isDirect()) { 
+      	    LOG.error("InfiniDB Import does not support --direct.");
+      	    return null;
+      	  } else {
+       	    LOG.info("InfiniDB Import using InfiniDBManager.");
+      	    return new InfiniDBManager(options);
+      	  }  
     	}
+        if (options.getActiveSqoopTool().getToolName().equals("import-all-tables")) {
+      	    LOG.info("InfiniDB Import-all-tables using InfiniDBManager.");
+      	    return new InfiniDBManager(options);
+    	}
+        if (options.getActiveSqoopTool().getToolName().equals("export")) {
+          if (options.isDirect()) { 
+    	    return new DirectInfiniDBManager(options);
+    	  }
+    	}
+	    return new MySQLManager(options);
       } else {
-        return new MySQLManager(options);
+        if (options.isDirect()) { 
+      	  return new DirectMySQLManager(options);
+        } else {
+          return new MySQLManager(options);
+        }
       }
     } else if (scheme.equals("jdbc:postgresql:")) {
       if (options.isDirect()) {

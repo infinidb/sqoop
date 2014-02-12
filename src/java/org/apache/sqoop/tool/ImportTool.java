@@ -848,7 +848,8 @@ public class ImportTool extends com.cloudera.sqoop.tool.BaseSqoopTool {
       throw new InvalidOptionsException(
           "When importing a query to Hive, you must specify --"
           + HIVE_TABLE_ARG + "." + HELP_STR);
-    } else if (options.getSqlQuery() != null && options.getNumMappers() > 1
+    } else if (!options.isInfiniDB() 
+    	&& options.getSqlQuery() != null && options.getNumMappers() > 1
         && options.getSplitByCol() == null) {
       throw new InvalidOptionsException(
           "When importing query results in parallel, you must specify --"
