@@ -76,7 +76,6 @@ public class InfiniDBRecordReader<T extends DBWritable>
   @Override
   public void initialize(InputSplit split, TaskAttemptContext context) 
       throws IOException {
-	System.out.println("Initializing InfiniDBRecordReader for " + ((InfiniDBInputSplit)split).getHostName());
     LOG.info("Initializing InfiniDBRecordReader for " + ((InfiniDBInputSplit)split).getHostName());
     // A good place to ensure this InfiniDB session has
 	// infinidb_local_query = true
@@ -85,7 +84,6 @@ public class InfiniDBRecordReader<T extends DBWritable>
       ResultSet res = st.executeQuery("SET @@infinidb_local_query=1");
     }
     catch (Exception ex) {
-      System.out.println("Failed to set infinidb_local_query: " + StringUtils.stringifyException(ex));
       LOG.error("Failed to set infinidb_local_query: " + StringUtils.stringifyException(ex));
       throw new IOException("Failed to set infinidb_local_query");
     }

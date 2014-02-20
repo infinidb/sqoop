@@ -67,12 +67,14 @@ public class InfiniDBImportJob extends DataDrivenImportJob {
     ConnManager mgr = getContext().getConnManager();
     try {
       // Replace the connection string hostname with 'localhost'
+      String mysql = "mysql://";
       String connectStr = options.getConnectString();
-      int hostNameFirst = connectStr.indexOf("mysql://") + 1;
-      int hostNameLast = connectStr.lastIndexOf('/') - 1;
+      int hostNameFirst = connectStr.indexOf(mysql) + mysql.length();
+      int hostNameLast = connectStr.lastIndexOf('/');
       String hostName = connectStr.substring(hostNameFirst, hostNameLast);
       connectStr = connectStr.replace(hostName, "localhost");
-      LOG.debug("InfiniDB local connection string: " + connectStr);
+      options.setConnectString(connectStr);
+      LOG.info("InfiniDB local connection string: " + options.getConnectString());
       
       String username = options.getUsername();
       if (null == username || username.length() == 0) {

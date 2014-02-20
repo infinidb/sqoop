@@ -2,10 +2,12 @@ package org.apache.sqoop.mapreduce;
 
 import java.io.IOException;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.InputFormat;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
+import org.apache.sqoop.mapreduce.InfiniDBExportInputFormat;
 
 import com.cloudera.sqoop.manager.ExportJobContext;
 import com.cloudera.sqoop.mapreduce.ExportJobBase;
@@ -28,4 +30,9 @@ public class InfiniDBExportJob extends MySQLExportJob {
 	    }
 	}
 
+	@Override
+	protected Class<? extends InputFormat> getInputFormatClass()
+      throws ClassNotFoundException {
+      return InfiniDBExportInputFormat.class;
+    }
 }

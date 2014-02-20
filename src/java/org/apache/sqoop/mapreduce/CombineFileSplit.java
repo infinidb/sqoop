@@ -150,6 +150,11 @@ public class CombineFileSplit extends InputSplit implements Writable {
     for(int i=0; i<arrLength; i++) {
       startoffset[i] = in.readLong();
     }
+    arrLength = in.readInt();
+    locations = new String[arrLength];
+    for(int i=0; i<arrLength; i++) {
+      locations[i] = Text.readString(in);
+    }
   }
 
   public void write(DataOutput out) throws IOException {
@@ -165,6 +170,10 @@ public class CombineFileSplit extends InputSplit implements Writable {
     out.writeInt(startoffset.length);
     for(long length : startoffset) {
       out.writeLong(length);
+    }
+    out.writeInt(locations.length);
+    for(String location : locations) {
+      Text.writeString(out, location);
     }
   }
 

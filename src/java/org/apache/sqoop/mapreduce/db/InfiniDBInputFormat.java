@@ -74,7 +74,6 @@ public class InfiniDBInputFormat<T extends DBWritable>
       TaskAttemptContext context) throws IOException, InterruptedException {
     Class<T> inputClass = (Class<T>) (getDBConf().getInputClass());
     try {
-      LOG.debug("Creating record reader for InfiniDB");
       return new InfiniDBRecordReader<T>((InfiniDBInputSplit)split, inputClass,
 	  	context.getConfiguration(), getConnection(), getDBConf());
     } catch (SQLException ex) {
@@ -86,8 +85,9 @@ public class InfiniDBInputFormat<T extends DBWritable>
   /** {@inheritDoc} */
   public List<InputSplit> getSplits(JobContext jobContext) throws IOException {
 	List<InputSplit> splits = new ArrayList<InputSplit>();
+
+	// Ask InfiniDB the names of all the hosts.
     String line;
-    // Ask InfiniDB the names of all the hosts.
     ProcessBuilder pb = new ProcessBuilder("/usr/local/Calpont/bin/calpontConsole", "getModuleHostNames", "pm");
     final Process process = pb.start();
     InputStream is = process.getInputStream();

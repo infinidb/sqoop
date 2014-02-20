@@ -21,10 +21,14 @@ package org.apache.sqoop.mapreduce;
 import java.io.*;
 import java.lang.reflect.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.hadoop.fs.FileSystem;
 
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.sqoop.mapreduce.db.InfiniDBInputFormat.InfiniDBInputSplit;
 
 /**
  * A generic RecordReader that can hand out different recordReaders
@@ -37,6 +41,8 @@ import org.apache.hadoop.conf.Configuration;
 
 public class CombineFileRecordReader<K, V> extends RecordReader<K, V> {
 
+  public static final Log LOG =
+		     LogFactory.getLog(CombineFileRecordReader.class.getName());
   // CHECKSTYLE:OFF
   static final Class [] constructorSignature = new Class []
                                          {CombineFileSplit.class,
@@ -61,6 +67,7 @@ public class CombineFileRecordReader<K, V> extends RecordReader<K, V> {
     if (null != this.curReader) {
       this.curReader.initialize(split, context);
     }
+    LOG.info("Initializing CombineFileRecordReader for " + split.getLocations()[0]);
   }
 
   public boolean nextKeyValue() throws IOException, InterruptedException {

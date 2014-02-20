@@ -452,16 +452,18 @@ public abstract class CombineFileInputFormat<K, V>
   /**
    * information about one file from the File System.
    */
-  private static class OneFileInfo {
+  protected static class OneFileInfo {
     private long fileSize;               // size of the file
     private OneBlockInfo[] blocks;       // all blocks in this file
-
+    private Path filePath;
+    
     OneFileInfo(Path path, Configuration conf,
                 HashMap<String, List<OneBlockInfo>> rackToBlocks,
                 HashMap<OneBlockInfo, String[]> blockToNodes,
                 HashMap<String, List<OneBlockInfo>> nodeToBlocks,
                 HashMap<String, Set<String>> rackToNodes)
                 throws IOException {
+      filePath = path;
       this.fileSize = 0;
 
       // get block locations from file system
@@ -514,6 +516,10 @@ public abstract class CombineFileInputFormat<K, V>
       }
     }
 
+    Path getFilePath() {
+      return filePath;
+    }
+    
     long getLength() {
       return fileSize;
     }
@@ -526,7 +532,7 @@ public abstract class CombineFileInputFormat<K, V>
   /**
    * information about one block from the File System.
    */
-  private static class OneBlockInfo {
+  protected static class OneBlockInfo {
     // CHECKSTYLE:OFF
     Path onepath;                // name of this file
     long offset;                 // offset in file
