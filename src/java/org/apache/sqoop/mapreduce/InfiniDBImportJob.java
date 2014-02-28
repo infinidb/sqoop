@@ -128,9 +128,16 @@ public class InfiniDBImportJob extends DataDrivenImportJob {
       job.getConfiguration().setLong(LargeObjectLoader.MAX_INLINE_LOB_LEN_KEY,
           options.getInlineLobLimit());
 
+      job.getConfiguration().setBoolean(ConfigurationHelper.getInfiniDBGlobalProperty(),
+          options.getInfinDBGlobalMode());
+
       LOG.debug("Using InputFormat: " + inputFormatClass);
       job.setInputFormatClass(inputFormatClass);
-    } finally {
+    } catch (Exception e) {
+      LOG.info("InfiniDBImportJob.configureInputFormat exception " + e);
+    }
+    
+    finally {
       try {
         mgr.close();
       } catch (SQLException sqlE) {

@@ -554,6 +554,11 @@ public class ImportTool extends com.cloudera.sqoop.tool.BaseSqoopTool {
               + " value of the primary key")
           .withLongOpt(SQL_QUERY_BOUNDARY)
           .create());
+      importOpts.addOption(OptionBuilder.withArgName("global")
+          .withDescription("For InfiniDB Imports, causes global queries."
+               + " The user is responsible for controlling locality via SQL")
+          .withLongOpt(INFINIDB_GLOBAL_ARG)
+          .create());
     }
 
     importOpts.addOption(OptionBuilder.withArgName("dir")
@@ -751,6 +756,10 @@ public class ImportTool extends com.cloudera.sqoop.tool.BaseSqoopTool {
 
         if (in.hasOption(SQL_QUERY_BOUNDARY)) {
           out.setBoundaryQuery(in.getOptionValue(SQL_QUERY_BOUNDARY));
+        }
+
+        if (in.hasOption(INFINIDB_GLOBAL_ARG)) {
+          out.setInfinDBGlobalMode(true);
         }
       }
 

@@ -23,6 +23,8 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.JobContext;
 
+import com.cloudera.sqoop.mapreduce.db.DBConfiguration;
+
 /**
  * @deprecated Moving to use org.apache.sqoop namespace.
  */
@@ -93,11 +95,17 @@ public final class ConfigurationHelper {
                ConfigurationHelper.getDbInputTableNameProperty();
   }
 
-
   public static String getDbInputConditionsProperty() {
     return org.apache.sqoop.config.
                ConfigurationHelper.getDbInputConditionsProperty();
   }
+  
+  public static String getInfiniDBGlobalProperty() {
+	return org.apache.sqoop.config.
+        ConfigurationHelper.getInfiniDBGlobalProperty();
+  }
+
+  
 
   public static String [] parseGenericOptions(
       Configuration conf, String [] args) throws IOException {

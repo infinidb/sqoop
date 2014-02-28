@@ -151,6 +151,14 @@ public final class ConfigurationHelper {
   }
 
   /**
+   * @return the Configuration property specifying an InfiniDB global query
+   * was requested for an import job.
+   */
+  public static String getInfiniDBGlobalProperty() {
+    return DBConfiguration.INFINIDB_GLOBAL_PROPERTY;
+  }
+
+  /**
    * Parse arguments in 'args' via the GenericOptionsParser and
    * embed the results in the supplied configuration.
    * @param conf the configuration to populate with generic options.

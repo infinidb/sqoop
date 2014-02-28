@@ -103,14 +103,14 @@ public class InfiniDBInputFormat<T extends DBWritable>
       if (line.length() > 0)
       {
         LOG.info("Adding " + line + " to splits");
-        splits.add(new InfiniDBInputSplit(line));
+        boolean global = jobContext.getConfiguration().getBoolean(org.apache.sqoop.config.ConfigurationHelper.getInfiniDBGlobalProperty(), false);
+        splits.add(new InfiniDBInputSplit(line, jobContext.getConfiguration().getBoolean(org.apache.sqoop.config.ConfigurationHelper.getInfiniDBGlobalProperty(), false)));
       }
     }
     
     jobContext.getConfiguration().setInt(ConfigurationConstants.PROP_MAPRED_MAP_TASKS, splits.size());
     return splits;
   }
-
 
   /**
    * Returns a list of all the server hostnames that hdfs is aware of.
@@ -173,8 +173,10 @@ public class InfiniDBInputFormat<T extends DBWritable>
   public static class InfiniDBInputSplit
       extends com.cloudera.sqoop.mapreduce.db.DBInputFormat.DBInputSplit {
 
+    private static final Log LOG =
+	      LogFactory.getLog(InfiniDBInputSplit.class);
 	private String[] hostNames;
-
+	private boolean infinidbGlobal;
 	/**
      * Default Constructor.
      */
@@ -186,9 +188,10 @@ public class InfiniDBInputFormat<T extends DBWritable>
      * Convenience Constructor.
      * @param hostName the name to return in getLocation()
      */
-    public InfiniDBInputSplit(final String hostName) {
+    public InfiniDBInputSplit(final String hostName, final boolean infinidbGlobal) {
       hostNames = new String[1];
       this.hostNames[0] = hostName;
+      this.infinidbGlobal = infinidbGlobal;
     }
 
     /**
@@ -212,18 +215,26 @@ public class InfiniDBInputFormat<T extends DBWritable>
     /** {@inheritDoc} */
     public void readFields(DataInput input) throws IOException {
       this.hostNames[0] = Text.readString(input);
+      this.infinidbGlobal = input.readBoolean();
     }
 
     @Override
     /** {@inheritDoc} */
     public void write(DataOutput output) throws IOException {
       Text.writeString(output, this.hostNames[0]);
+      output.writeBoolean(this.infinidbGlobal);
     }
 
     public String getHostName() {
       return hostNames[0];
     }
-
+    
+    public boolean getInfinidbGlobal() {
+      return infinidbGlobal;
+    }
+    
+    public void setInfiniGlobal(boolean infinidbGlobal) {
+      this.infinidbGlobal = infinidbGlobal;
+    }
   }
-
 }

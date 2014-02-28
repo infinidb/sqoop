@@ -103,6 +103,10 @@ public class DBConfiguration
   public static final String OUTPUT_FIELD_COUNT_PROPERTY =
       org.apache.sqoop.mapreduce.db.DBConfiguration.OUTPUT_FIELD_COUNT_PROPERTY;
 
+  /** InfiniDB Global query was set on the command line. */
+  public static final String INFINIDB_GLOBAL_PROPERTY =
+      org.apache.sqoop.mapreduce.db.DBConfiguration.INFINIDB_GLOBAL_PROPERTY;
+
   /**
    * Sets the DB access related fields in the {@link Configuration}.
    * @param conf the configuration

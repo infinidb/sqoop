@@ -141,6 +141,9 @@ public abstract class BaseSqoopTool extends com.cloudera.sqoop.tool.SqoopTool {
   public static final String UPDATE_KEY_ARG = "update-key";
   public static final String UPDATE_MODE_ARG = "update-mode";
 
+  // Arguments for infinidb imports.
+  public static final String INFINIDB_GLOBAL_ARG = "global";
+
   // Arguments for incremental imports.
   public static final String INCREMENT_TYPE_ARG = "incremental";
   public static final String INCREMENT_COL_ARG = "check-column";
@@ -242,7 +245,7 @@ public abstract class BaseSqoopTool extends com.cloudera.sqoop.tool.SqoopTool {
   }
 
   /**
-   * Examines a subset of the arrray presented, and determines if it
+   * Examines a subset of the array presented, and determines if it
    * contains any non-empty arguments. If so, logs the arguments
    * and returns true.
    *

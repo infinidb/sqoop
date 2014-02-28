@@ -81,7 +81,16 @@ public class InfiniDBRecordReader<T extends DBWritable>
 	// infinidb_local_query = true
 	try {
       Statement st = getConnection().createStatement();
-      ResultSet res = st.executeQuery("SET @@infinidb_local_query=1");
+      if (((InfiniDBInputFormat.InfiniDBInputSplit)split).getInfinidbGlobal()) {
+    	// This is set by --global on the sqoop command line.
+    	// Causes local exeMgr execution, but queries across all PMs.
+      	ResultSet res = st.executeQuery("SET @@infinidb_local_query=2");  
+        LOG.info("initialize: Setting infinidb_local_query=2");
+      } else {
+    	// Causes local only query.
+    	ResultSet res = st.executeQuery("SET @@infinidb_local_query=1");  
+        LOG.info("initialize: Setting infinidb_local_query=1");
+      }
     }
     catch (Exception ex) {
       LOG.error("Failed to set infinidb_local_query: " + StringUtils.stringifyException(ex));
@@ -95,7 +104,7 @@ public class InfiniDBRecordReader<T extends DBWritable>
   protected String getSelectQuery() {
     StringBuilder query = new StringBuilder();
 
-    // Default codepath for MySQL, HSQLDB, etc.
+    // Default code path for MySQL, HSQLDB, etc.
     // Relies on LIMIT/OFFSET for splits.
     if (dbConf.getInputQuery() == null) {
       query.append("SELECT ");

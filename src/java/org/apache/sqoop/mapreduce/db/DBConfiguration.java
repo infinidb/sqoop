@@ -101,6 +101,11 @@ public class DBConfiguration {
   public static final String OUTPUT_FIELD_COUNT_PROPERTY =
     "mapreduce.jdbc.output.field.count";
 
+  /** InfiniDB Global query was set on the command line. */
+  public static final String INFINIDB_GLOBAL_PROPERTY =
+    "mapreduce.jdbc.infinidb.global";
+
+  
   /**
    * Sets the DB access related fields in the {@link Configuration}.
    * @param conf the configuration

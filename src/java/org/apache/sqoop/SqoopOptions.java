@@ -119,6 +119,7 @@ public class SqoopOptions implements Cloneable {
   @StoredAsProperty("db.query") private String sqlQuery;
   @StoredAsProperty("db.query.boundary") private String boundaryQuery;
   @StoredAsProperty("db.infinidb") private boolean infinidb;
+  @StoredAsProperty("db.infinidbGlobal") private boolean infinidbGlobal;
   @StoredAsProperty("jdbc.driver.class") private String driverClassName;
   @StoredAsProperty("hdfs.warehouse.dir") private String warehouseDir;
   @StoredAsProperty("hdfs.target.dir") private String targetDir;
@@ -1261,6 +1262,17 @@ public class SqoopOptions implements Cloneable {
 
   public void setBoundaryQuery(String sqlStatement) {
     boundaryQuery = sqlStatement;
+  }
+
+  /**
+   * @return the user-specified option to overwrite existing table in hive.
+   */
+  public boolean getInfinDBGlobalMode() {
+    return infinidbGlobal;
+  }
+
+  public void setInfinDBGlobalMode(boolean infinidbGlobal) {
+    this.infinidbGlobal = infinidbGlobal;
   }
 
   /**

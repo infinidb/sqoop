@@ -163,6 +163,8 @@ public abstract class BaseSqoopTool
           org.apache.sqoop.tool.BaseSqoopTool.UPDATE_KEY_ARG;
   public static final String UPDATE_MODE_ARG =
           org.apache.sqoop.tool.BaseSqoopTool.UPDATE_MODE_ARG;
+  public static final String INFINIDB_GLOBAL_ARG =
+      org.apache.sqoop.tool.BaseSqoopTool.INFINIDB_GLOBAL_ARG;
   public static final String INCREMENT_TYPE_ARG =
           org.apache.sqoop.tool.BaseSqoopTool.INCREMENT_TYPE_ARG;
   public static final String INCREMENT_COL_ARG =
