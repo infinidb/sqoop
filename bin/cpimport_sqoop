@@ -1,53 +1,11 @@
-export JAVA_HOME=/usr/java/jdk1.6.0_31
-export LD_LIBRARY_PATH=$JAVA_HOME/jre/lib/amd64/server
-export PATH=/usr/local/Calpont/bin:$PATH
-# Autodetect JAVA_HOME if not defined
-if [ -e /usr/libexec/bigtop-detect-javahome ]; then
-. /usr/libexec/bigtop-detect-javahome
-elif [ -e /usr/lib/bigtop-utils/bigtop-detect-javahome ]; then
-. /usr/lib/bigtop-utils/bigtop-detect-javahome
+if [ -z "$INFINIDB_INSTALL_DIR" ]; then
+ INFINIDB_INSTALL_DIR=/usr/local/Calpont
 fi
+# echo $INFINIDB_INSTALL_DIR
+hdfs=`$INFINIDB_INSTALL_DIR/bin/getConfig SystemConfig DataFileEnvFile`
+# echo $hdfs
+. $INFINIDB_INSTALL_DIR/bin/$hdfs
 
-HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec
-. $HADOOP_LIBEXEC_DIR/hadoop-config.sh
+$INFINIDB_INSTALL_DIR/bin/cpimport.bin -D $1 $2 $3 $4 $5 $6
 
-# CLASSPATH initially contains $HADOOP_CONF_DIR
-CLASSPATH="${HADOOP_CONF_DIR}"
-CLASSPATH=${CLASSPATH}:$JAVA_HOME/lib/tools.jar
-
-# so that filenames w/ spaces are handled correctly in loops below
-IFS=
-
-# add libs to CLASSPATH
-for f in $HADOOP_COMMON_HOME/lib/*.jar; do
-  CLASSPATH=${CLASSPATH}:$f;
-done
-
-for ff in $HADOOP_COMMON_HOME/*.jar; do
-  CLASSPATH=${CLASSPATH}:$ff
-done
-
-# add libs to CLASSPATH
-for f2a in $HADOOP_HDFS_HOME/lib/*.jar; do
-  CLASSPATH=${CLASSPATH}:$f2a;
-done
-
-for f2b in $HADOOP_HDFS_HOME/*.jar; do
-  CLASSPATH=${CLASSPATH}:$f2b
-done
-
-# add libs to CLASSPATH
-for f3a in $HADOOP_MAPRED_HOME/lib/*.jar; do
-  CLASSPATH=${CLASSPATH}:$f3a;
-done
-
-for f3b in $HADOOP_MAPRED_HOME/*.jar; do
-  CLASSPATH=${CLASSPATH}:$f3b
-done
-
-# restore ordinary behaviour
-unset IFS
-
-export CLASSPATH=$CLASSPATH
-/usr/local/Calpont/bin/cpimport.bin -D $1 $2 $3 $4 $5 $6
 
