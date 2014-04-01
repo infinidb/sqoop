@@ -113,10 +113,15 @@ public class InfiniDBExportInputFormat
     InputStreamReader isr = new InputStreamReader(is);
     BufferedReader br = new BufferedReader(isr);
 
-    // Skip the first line, as it's just stuff, not a hostname.
-    line = br.readLine();
+    // Skip non hostname lines
+    while ((line = br.readLine()) != null) {
+    	// When we find the word "getmodulehostnames", we know the
+    	// actual hostnames are next. All the stuff preceding is junk.
+        if (line.contains("getmodulehostnames"))
+        	break;
+    }    
     // Create split data objects (we'll create the CombineFileSplits
-    // from these). One split per PM.
+    // from these). One split per PM hostname.
     while ((line = br.readLine()) != null) {
       if (line.length() > 0)
       {

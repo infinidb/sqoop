@@ -96,8 +96,13 @@ public class InfiniDBInputFormat<T extends DBWritable>
 
     // generate splits
     
-    // Skip the first line, as it's just stuff, not a hostname.
-    line = br.readLine();
+    // Skip non hostname lines
+    while ((line = br.readLine()) != null) {
+    	// When we find the word "getmodulehostnames", we know the
+    	// actual hostnames are next. All the stuff preceding is junk.
+        if (line.contains("getmodulehostnames"))
+        	break;
+    }    
     // One hostname per line.
     while ((line = br.readLine()) != null) {
       if (line.length() > 0)
