@@ -46,7 +46,7 @@ import org.apache.sqoop.mapreduce.DBWritable;
 import org.apache.sqoop.mapreduce.db.DataDrivenDBInputFormat;
 import org.apache.sqoop.mapreduce.db.InfiniDBRecordReader;
 import org.apache.sqoop.config.ConfigurationConstants;
-import com.cloudera.sqoop.mapreduce.db.DBConfiguration;
+import org.apache.sqoop.mapreduce.db.DBConfiguration;
 import com.cloudera.sqoop.mapreduce.db.DBInputFormat.DBInputSplit;
 
 import java.util.Collection;
@@ -86,9 +86,12 @@ public class InfiniDBInputFormat<T extends DBWritable>
   public List<InputSplit> getSplits(JobContext jobContext) throws IOException {
 	List<InputSplit> splits = new ArrayList<InputSplit>();
 
+	Configuration conf = jobContext.getConfiguration();
+
 	// Ask InfiniDB the names of all the hosts.
     String line;
-    ProcessBuilder pb = new ProcessBuilder("/usr/local/Calpont/bin/calpontConsole", "getModuleHostNames", "pm");
+    String cc_path = conf.get(DBConfiguration.INFINIDB_BIN_PATH, DBConfiguration.DEFAULT_INFINIDB_BIN_PATH);
+    ProcessBuilder pb = new ProcessBuilder(cc_path + "/calpontConsole", "getModuleHostNames", "pm");
     final Process process = pb.start();
     InputStream is = process.getInputStream();
     InputStreamReader isr = new InputStreamReader(is);
@@ -108,12 +111,12 @@ public class InfiniDBInputFormat<T extends DBWritable>
       if (line.length() > 0)
       {
         LOG.info("Adding " + line + " to splits");
-        boolean global = jobContext.getConfiguration().getBoolean(org.apache.sqoop.config.ConfigurationHelper.getInfiniDBGlobalProperty(), false);
-        splits.add(new InfiniDBInputSplit(line, jobContext.getConfiguration().getBoolean(org.apache.sqoop.config.ConfigurationHelper.getInfiniDBGlobalProperty(), false)));
+        boolean global = conf.getBoolean(org.apache.sqoop.config.ConfigurationHelper.getInfiniDBGlobalProperty(), false);
+        splits.add(new InfiniDBInputSplit(line, conf.getBoolean(org.apache.sqoop.config.ConfigurationHelper.getInfiniDBGlobalProperty(), false)));
       }
     }
     
-    jobContext.getConfiguration().setInt(ConfigurationConstants.PROP_MAPRED_MAP_TASKS, splits.size());
+    conf.setInt(ConfigurationConstants.PROP_MAPRED_MAP_TASKS, splits.size());
     return splits;
   }
 

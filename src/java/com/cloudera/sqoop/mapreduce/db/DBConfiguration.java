@@ -107,6 +107,14 @@ public class DBConfiguration
   public static final String INFINIDB_GLOBAL_PROPERTY =
       org.apache.sqoop.mapreduce.db.DBConfiguration.INFINIDB_GLOBAL_PROPERTY;
 
+  /** The InfiniDB installed bin directory */
+  public static final String INFINIDB_BIN_PATH =
+	  org.apache.sqoop.mapreduce.db.DBConfiguration.INFINIDB_BIN_PATH;
+
+  /** The default InfiniDB installed bin directory*/
+  public static final String DEFAULT_INFINIDB_BIN_PATH = 
+	  org.apache.sqoop.mapreduce.db.DBConfiguration.DEFAULT_INFINIDB_BIN_PATH;
+  
   /**
    * Sets the DB access related fields in the {@link Configuration}.
    * @param conf the configuration

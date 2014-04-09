@@ -104,8 +104,7 @@ public class InfiniDBRecordReader<T extends DBWritable>
   protected String getSelectQuery() {
     StringBuilder query = new StringBuilder();
 
-    // Default code path for MySQL, HSQLDB, etc.
-    // Relies on LIMIT/OFFSET for splits.
+    // Default code path for InfiniDB
     if (dbConf.getInputQuery() == null) {
       query.append("SELECT ");
 

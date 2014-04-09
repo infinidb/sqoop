@@ -18,10 +18,10 @@ import org.apache.sqoop.util.JdbcUrl;
 import org.apache.sqoop.util.LoggingAsyncSink;
 import org.apache.sqoop.util.NullAsyncSink;
 import org.apache.sqoop.util.TaskId;
+import org.apache.sqoop.mapreduce.db.DBConfiguration;
 
 import com.cloudera.sqoop.io.NamedFifo;
 import com.cloudera.sqoop.manager.MySQLUtils;
-import com.cloudera.sqoop.mapreduce.db.DBConfiguration;
 
 /**
  * Mapper that starts a 'cpimport' process and uses that to export rows from
@@ -38,13 +38,6 @@ extends SqoopMapper<KEYIN, VALIN, NullWritable, NullWritable> {
   public static final Log LOG = LogFactory.getLog(
 			InfiniDBExportMapper.class.getName());
   
-  /** The InfiniDB installed bin directory that has cpimport*/
-  public static final String INFINIDB_BIN_PATH =
-      "sqoop.infinidb.bin.path";
-
-  /** The default InfiniDB installed bin directory*/
-  public static final String DEFAULT_INFINIDB_BIN_PATH = "/usr/local/Calpont/bin";
-
   protected Configuration conf;
 
   /** The FIFO being used to communicate with cpimport. */
@@ -102,7 +95,8 @@ extends SqoopMapper<KEYIN, VALIN, NullWritable, NullWritable> {
       throw new IOException("Could not determine database name");
     }
 
-    String cpimport_path = conf.get(INFINIDB_BIN_PATH, DEFAULT_INFINIDB_BIN_PATH);
+    String cpimport_path = conf.get(DBConfiguration.INFINIDB_BIN_PATH, DBConfiguration.DEFAULT_INFINIDB_BIN_PATH);
+    LOG.info("cpimport_path=" + cpimport_path);
     args.add(cpimport_path + "/cpimport_sqoop"); // needs to be on the path.
 
     args.add(databaseName);

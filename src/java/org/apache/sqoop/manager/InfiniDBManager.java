@@ -30,6 +30,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.util.StringUtils;
+import org.apache.sqoop.mapreduce.db.DBConfiguration;
 import org.apache.sqoop.mapreduce.db.InfiniDBInputFormat;
 import org.apache.sqoop.mapreduce.InfiniDBImportJob;
 
@@ -40,7 +41,7 @@ import com.cloudera.sqoop.mapreduce.HBaseImportJob;
 import com.cloudera.sqoop.mapreduce.ImportJobBase;
 import com.cloudera.sqoop.util.ImportException;
 /**
- * Manages connections to MySQL databases.
+ * Manages connections to InfiniDB databases.
  */
 public class InfiniDBManager extends org.apache.sqoop.manager.MySQLManager {
 
@@ -74,10 +75,10 @@ public class InfiniDBManager extends org.apache.sqoop.manager.MySQLManager {
       ImportJobBase importer;
       if (opts.getHBaseTable() != null) {
         // Import to HBase.
-        if (!HBaseUtil.isHBaseJarPresent()) {
-          throw new ImportException("HBase jars are not present in "
-              + "classpath, cannot import to HBase!");
-        }
+//        if (!HBaseUtil.isHBaseJarPresent()) {
+//          throw new ImportException("HBase jars are not present in "
+//              + "classpath, cannot import to HBase!");
+//        }
         // TODO: create InfiniDBHBaseImportJob
         throw new ImportException("HBase is not yet supported for InfiniDB import");
 //        importer = new HBaseImportJob(opts, context);
@@ -88,6 +89,16 @@ public class InfiniDBManager extends org.apache.sqoop.manager.MySQLManager {
       }
       checkTableImportOptions(context);
 
+      // If InfiniDB isn't installed in the default location, and there's no command line
+      // over-ride, there should be an environment variable pointing to the location.
+      if (context.getOptions().getConf().get(DBConfiguration.INFINIDB_BIN_PATH) == null) {
+    	  String InfiniDBBin = System.getenv("INFINIDB_INSTALL_DIR");
+    	  if (InfiniDBBin != null && !InfiniDBBin.isEmpty()) {
+    		  InfiniDBBin = InfiniDBBin + "/bin";
+    		  context.getOptions().getConf().set(DBConfiguration.INFINIDB_BIN_PATH, InfiniDBBin);
+    	  }
+      }
+		
       String splitCol = getSplitColumn(opts, tableName);
       importer.runImport(tableName, jarFile, splitCol, opts.getConf());
 	}
@@ -143,7 +154,7 @@ public class InfiniDBManager extends org.apache.sqoop.manager.MySQLManager {
 	public Map<String, String> getColumnTypeNames(String tableName,
 			String sqlQuery) {
 		Map<String, String> columnTypeNames;
-		if (null != tableName) {
+		if (null != tableName && !tableName.isEmpty()) {
 			// We're generating a class based on a table import.
 			columnTypeNames = getColumnTypeNamesForTable(tableName);
 		} else {

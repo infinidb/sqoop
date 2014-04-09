@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import com.cloudera.sqoop.SqoopOptions;
 import com.cloudera.sqoop.util.ExportException;
 import org.apache.sqoop.mapreduce.InfiniDBExportJob;
+import org.apache.sqoop.mapreduce.db.DBConfiguration;
 
 public class DirectInfiniDBManager extends DirectMySQLManager {
 
@@ -38,7 +39,16 @@ public class DirectInfiniDBManager extends DirectMySQLManager {
 		    super.exportTable(context);
 		    return;
 		}
-
+		
+		// If InfiniDB isn't installed in the default location, and there's no command line
+		// over-ride (deprecated), there should be an environment variable pointing to the location.
+		if (context.getOptions().getConf().get(DBConfiguration.INFINIDB_BIN_PATH) == null) {
+			String InfiniDBBin = System.getenv("INFINIDB_INSTALL_DIR");
+			if (InfiniDBBin != null && !InfiniDBBin.isEmpty()) {
+				InfiniDBBin = InfiniDBBin + "/bin";
+				context.getOptions().getConf().set(DBConfiguration.INFINIDB_BIN_PATH, InfiniDBBin);
+			}
+		}
 		InfiniDBExportJob exportJob = new InfiniDBExportJob(context);
 		exportJob.runExport();
 	}	  

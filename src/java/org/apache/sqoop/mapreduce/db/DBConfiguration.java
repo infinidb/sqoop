@@ -105,7 +105,14 @@ public class DBConfiguration {
   public static final String INFINIDB_GLOBAL_PROPERTY =
     "mapreduce.jdbc.infinidb.global";
 
-  
+  /** The InfiniDB installed bin directory */
+  public static final String INFINIDB_BIN_PATH =
+      "sqoop.infinidb.bin.path";
+
+  /** The default InfiniDB installed bin directory*/
+  public static final String DEFAULT_INFINIDB_BIN_PATH = "/usr/local/Calpont/bin";
+
+
   /**
    * Sets the DB access related fields in the {@link Configuration}.
    * @param conf the configuration

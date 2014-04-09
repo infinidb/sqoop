@@ -47,6 +47,7 @@ import org.apache.sqoop.mapreduce.CombineFileInputFormat;
 import org.apache.sqoop.mapreduce.CombineFileInputFormat.OneBlockInfo;
 import org.apache.sqoop.mapreduce.CombineFileInputFormat.OneFileInfo;
 import org.apache.sqoop.mapreduce.db.InfiniDBInputFormat.InfiniDBInputSplit;
+import org.apache.sqoop.mapreduce.db.DBConfiguration;
 
 /**
  * InputFormat that generates a user-defined number of splits to inject data
@@ -107,7 +108,8 @@ public class InfiniDBExportInputFormat
 
     // Ask InfiniDB the names of all the PM hosts.
     String line;
-    ProcessBuilder pb = new ProcessBuilder("/usr/local/Calpont/bin/calpontConsole", "getModuleHostNames", "pm");
+    String cc_path = conf.get(DBConfiguration.INFINIDB_BIN_PATH, DBConfiguration.DEFAULT_INFINIDB_BIN_PATH);
+    ProcessBuilder pb = new ProcessBuilder(cc_path + "/calpontConsole", "getModuleHostNames", "pm");
     final Process process = pb.start();
     InputStream is = process.getInputStream();
     InputStreamReader isr = new InputStreamReader(is);
