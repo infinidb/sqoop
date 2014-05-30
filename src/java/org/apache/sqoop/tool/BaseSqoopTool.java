@@ -206,7 +206,7 @@ public abstract class BaseSqoopTool extends com.cloudera.sqoop.tool.SqoopTool {
         sqoopOpts.setInfiniDBMode(true);
         connectString = connectString.replace("infinidb", "mysql");
         LOG.info("Found an InfiniDB connect string, using a mysql connection "+
-                 "string for compatibility");
+                 "string for compatibility - " + connectString);
                  
         // set InfiniDB delimiter set
         LOG.info("Using InfiniDB-specific delimiters for output if not explicitly specified");
@@ -669,7 +669,7 @@ public abstract class BaseSqoopTool extends com.cloudera.sqoop.tool.SqoopTool {
     	out.setInfiniDBMode(true);
         connectString = connectString.replace("infinidb", "mysql");
         LOG.info("Found an InfiniDB connect string, using a mysql connection "+
-        		 "string for compatibility");
+        		 "string for compatibility - " + connectString);
         // set InfiniDB delimiter set
         LOG.info("Using InfiniDB-specific delimiters for output if not explicitly specified");
         out.setOutputDelimiters(DelimiterSet.INFINIDB_DELIMITERS);

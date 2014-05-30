@@ -166,7 +166,7 @@ public class InfiniDBInputFormat<T extends DBWritable>
   }
 
   /** setInput() takes a custom query and a separate "bounding query" to use
-      instead of the custom "count query". We ifnore the bounding query.
+      instead of the custom "count query". We ignore the bounding query.
     */
   public static void setInput(Job job,
       Class<? extends DBWritable> inputClass,
