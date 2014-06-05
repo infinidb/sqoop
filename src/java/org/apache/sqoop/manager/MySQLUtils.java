@@ -57,6 +57,16 @@ public final class MySQLUtils {
       "sqoop.output.escaped.by";
   public static final String OUTPUT_ENCLOSE_REQUIRED_KEY =
       "sqoop.output.enclose.required";
+  public static final String INPUT_FIELD_DELIM_KEY =
+      "sqoop.input.field.delim";
+  public static final String INPUT_RECORD_DELIM_KEY =
+      "sqoop.input.record.delim";
+  public static final String INPUT_ENCLOSED_BY_KEY =
+      "sqoop.input.enclosed.by";
+  public static final String INPUT_ESCAPED_BY_KEY =
+      "sqoop.input.escaped.by";
+  public static final String INPUT_ENCLOSE_REQUIRED_KEY =
+      "sqoop.input.enclose.required";
   public static final String TABLE_NAME_KEY =
       ConfigurationHelper.getDbInputTableNameProperty();
   public static final String CONNECT_STRING_KEY =
@@ -115,6 +125,32 @@ public final class MySQLUtils {
     w.close();
 
     return tempFile.toString();
+  }
+
+  public static String convertDelimToString(int delim) {
+	if (0 != delim) {
+		switch (delim) {
+		case 9: // ascii tab
+			return "\\t";
+		case 10: // ascii line feed
+			return "\\n";
+		case 13: // ascii carriage return
+			return "\\r";
+		case 32:  // ascii space
+			return "\' \'";
+		case 34:  // ascii double qoute
+			return "\\\"";
+		case 39:  // ascii closing single quote
+			return "\\'";
+		case 92:  // ascii backslash
+			return "\\";
+		case 96:  // ascii opening single quote
+			return "\\`";
+		default:
+			return "" + (char)delim;
+		}
+	}
+	return "|";
   }
 }
 
