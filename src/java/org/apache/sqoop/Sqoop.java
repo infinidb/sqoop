@@ -214,6 +214,18 @@ public class Sqoop extends Configured implements Tool {
           + ". See 'sqoop help'.");
       return 1;
     }
+    // InfiniDB: Disable Import until we can get it to work with 
+    // the new map-reduce of yarn
+    if (tool.getToolName().contentEquals("import")) {
+    	String errmsg = "InfiniDB Sqoop Import is disabled. See the documentation for how to use pdsh to accomplish this task";
+        LOG.error(errmsg);
+        return 1;
+    }
+    if (tool.getToolName().contentEquals("import-all-tables")) {
+    	String errmsg = "InfiniDB Sqoop import-all-tables is disabled. See the documentation for how to use pdsh to accomplish this task";
+        LOG.error(errmsg);
+        return 1;
+    }
 
 
     Sqoop sqoop = new Sqoop(tool, pluginConf);
